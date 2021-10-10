@@ -14,22 +14,22 @@ function App() {
             {id: 3, title: 'C++ triks', content: "the tricks is really cumplaxity so..." },
         ]
     ) 
-    
-    const [title, setTitle] = useState('')
-    const [content, setContent] = useState('')
+
+    const [newPost, setNewPost] = useState(
+        {   
+            id: 0,
+            title: '', 
+            content: ''
+        }
+    )
 
 
     function addNewPost(e) {
         e.preventDefault() 
 
-        const newPost ={
-            id: posts[posts.length - 1].id + 1, 
-            title, 
-            content 
-        }
-
-        setPosts([...posts, newPost])
-
+        setPosts([...posts, {...newPost, id: posts[posts.length - 1].id + 1}])
+        setNewPost({title: '', content: ''})
+        
     }
 
     return (
@@ -37,15 +37,15 @@ function App() {
 
         <form className="post__create">
             <Input 
-                value={title}
-                onChange={e => setTitle(e.target.value)}
+                value={newPost.title}
+                onChange={e => setNewPost({...newPost, title: e.target.value})}
                 type="text" 
                 placeholder="title"  
             />
 
             <Input 
-                value={content}
-                onChange={e => setContent(e.target.value)}
+                value={newPost.content}
+                onChange={e => setNewPost({...newPost, content: e.target.value})}
                 type="text" 
                 placeholder="content" 
             />

@@ -7,7 +7,7 @@ This is a simple tutorial from React with some helpful tips that I noticed
 - install npm and npx 
 - run command belongs
 ```shell
-npx create-react-app 
+npx create-react-app app-name
 ```
 
 - after that run 

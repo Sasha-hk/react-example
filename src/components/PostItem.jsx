@@ -3,17 +3,15 @@ import Button from './UI/Button/Button.jsx'
 
 
 
-const PostItem = (props) => {
-  
-
+const PostItem = ({post, deletePost, remove}) => {
     return (
         <div className="post">
             <div className="post__content">
-                <h2>{props.post.title}</h2>
-                <p>{props.post.content}</p>
+                <h2>{post.title}</h2>
+                <p>{post.content}</p>
             </div>
 
-            <Button>Delete</Button>
+            <Button onClick={() => remove(post.id)}>Delete</Button>
         </div>
     )
 }

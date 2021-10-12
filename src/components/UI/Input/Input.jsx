@@ -7,12 +7,4 @@ const Input = React.forwardRef((props, ref) => {
     )
 })
 
-
-
-// React.forwardRef((ref, props) => {
-//     return (
-//         <input ref={ref} className={classes.input} {...props} />
-//     )
-// })
-
 export default Input;

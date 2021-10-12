@@ -1,0 +1,8 @@
+.select {
+    background: transparent;
+    border: 1px solid #000;
+    color: #000;
+    font-size: 14px;
+    outline: none;
+    padding: 3px;
+}

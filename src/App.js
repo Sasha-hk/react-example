@@ -2,6 +2,8 @@ import React, {useState, useMemo} from 'react';
 import PostList from './components/PostList';
 import PostFilter from './components/PostFilter'
 import PostForm from './components/PostForm'
+import Modal from './components/UI/Modal/Modal'
+import Button from './components/UI/Button/Button'
 import './styles/App.css';
 
 
@@ -28,9 +30,15 @@ function App() {
         return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
     }, [filter.query, sortedPosts])
 
+    const [modal, setModal] = useState(false)
+
     const createNewPost = (newPost) => {
-        console.log(1)
-        setPosts([...posts, newPost ])
+        console.log(newPost)
+
+        if (newPost.title && newPost.content) {
+            setPosts([...posts, newPost ])
+            setModal(false)
+        }
     }
     
     const removePost = (postID) => {
@@ -40,7 +48,14 @@ function App() {
     return (
     <div className="App">
 
-        <PostForm create={createNewPost} />
+        <Button onClick={e => setModal(true)} >
+            Create post
+        </Button>
+
+        <Modal visible={modal} setVisible={setModal}>
+            <h1>Create post</h1>
+            <PostForm create={createNewPost} />
+        </Modal>
         
         <PostFilter filter={filter} setFilter={setFilter} />
         

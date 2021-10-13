@@ -10,7 +10,10 @@ const PostForm = ({create}) => {
     function addNewPost(e) {
         e.preventDefault() 
         create({...newPost, id: Date.now()})
-        setNewPost({title: '', content: ''})
+
+        if (newPost.title && newPost.content) {
+            setNewPost({title: '', content: ''})
+        }
     }
 
     return (

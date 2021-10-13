@@ -24,6 +24,10 @@
 .post__list {
     width: 100%;
 }
+.post__create {
+    display: flex;
+    flex-direction: column;
+}
 .post {
     border: 1px solid gray;
     border-radius: 4px;

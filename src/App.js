@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import PostList from './components/PostList';
-import PostForm from './components/PostForm.jsx'
-import Select from './components/UI/Select/Select.jsx'
+import PostFilter from './components/PostFilter'
+import PostForm from './components/PostForm'
 import './styles/App.css';
 
 
@@ -15,9 +15,21 @@ function App() {
         ]
     ) 
 
-    const [selectdSord, setSelectdSord] = useState('')
+    const [filter, setFilter] = useState({sort: '', query: ''})
+
+    const sortedPosts = useMemo(() => {
+        if (filter.sort) {
+            return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
+        }
+        return posts
+    }, [posts, filter.sort]);
+
+    const sortedAndSearchedPosts = useMemo(() => {
+        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+    }, [filter.query, sortedPosts])
 
     const createNewPost = (newPost) => {
+        console.log(1)
         setPosts([...posts, newPost ])
     }
     
@@ -25,24 +37,14 @@ function App() {
         setPosts(posts.filter(p => p.id !== postID))
     }
 
-    const sortPosts = (sortBy) => {
-        setSelectdSord(sortBy)
-        setPosts([...posts].sort((a, b) => a[sortBy].localeCompare(b[sortBy])))
-    }
-
     return (
     <div className="App">
 
         <PostForm create={createNewPost} />
         
-        <Select 
-            options={[{value: 'title', name: 'by name'}, {value: 'content', name: 'by body'}]} 
-            defaultValue="None" 
-            value={selectdSord}
-            onChange={sortPosts}    
-        />
+        <PostFilter filter={filter} setFilter={setFilter} />
         
-        <PostList remove={removePost} posts={posts} title="JavaScript" />
+        <PostList remove={removePost} posts={sortedAndSearchedPosts} title="JavaScript" />
         
     </div>
     );

@@ -6,6 +6,8 @@ import Modal from './components/UI/Modal/Modal'
 import Button from './components/UI/Button/Button'
 import './styles/App.css';
 
+import { usePosts } from './components/hooks/usePosts';
+
 
 
 function App() {
@@ -19,16 +21,7 @@ function App() {
 
     const [filter, setFilter] = useState({sort: '', query: ''})
 
-    const sortedPosts = useMemo(() => {
-        if (filter.sort) {
-            return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-        }
-        return posts
-    }, [posts, filter.sort]);
-
-    const sortedAndSearchedPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
-    }, [filter.query, sortedPosts])
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
     const [modal, setModal] = useState(false)
 

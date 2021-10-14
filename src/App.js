@@ -33,8 +33,6 @@ function App() {
     const [modal, setModal] = useState(false)
 
     const createNewPost = (newPost) => {
-        console.log(newPost)
-
         if (newPost.title && newPost.content) {
             setPosts([...posts, newPost ])
             setModal(false)

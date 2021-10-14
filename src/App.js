@@ -9,16 +9,27 @@ import './styles/App.css';
 import PostService from './API/PostService'
 import { usePosts } from './components/hooks/usePosts';
 import { useFatching } from './components/hooks/useFatching';
+import { getPagesCount } from './components/utils/pages'
 
 
 
 function App() {
-    const [posts, setPosts] = useState([])  
+    const [posts, setPosts] = useState([]) 
+    const [filter, setFilter] = useState({sort: '', query: ''})
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+    const [modal, setModal] = useState(false)
+    const [totalPages, setTotalPages] = useState(0)
+    const [limit, setLimit] = useState(10)
+    const [page, setPage] = useState(1)
 
     const [fachingPost, isPostLoading, errorPost] = useFatching(async () => {
-        const posts = await new PostService().getAll()
-        setPosts(posts)
+        const posts = await new PostService().getAll(limit, page)
+        setPosts(posts.data)
+        const totalCount = posts.headers['x-total-count'];
+        setTotalPages(getPagesCount(totalCount, limit))
     })
+
+    console.log(totalPages)
 
     useEffect(() => {
         fachingPost()
@@ -26,11 +37,6 @@ function App() {
         []
     )  
     
-    const [filter, setFilter] = useState({sort: '', query: ''})
-
-    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
-
-    const [modal, setModal] = useState(false)
 
     const createNewPost = (newPost) => {
         if (newPost.title && newPost.body) {
@@ -56,7 +62,7 @@ function App() {
         </Modal>
         
         <PostFilter filter={filter} setFilter={setFilter} />
-        
+        { errorPost && <h1>An error occurred</h1> }
         {isPostLoading 
             ? <Loading/>
             : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="JavaScript" />

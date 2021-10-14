@@ -4,33 +4,28 @@ import PostFilter from './components/PostFilter'
 import PostForm from './components/PostForm'
 import Modal from './components/UI/Modal/Modal'
 import Button from './components/UI/Button/Button'
+import Loading from './components/UI/Loading/Loading'
 import './styles/App.css';
-
-import axios from "axios";
+import PostService from './API/PostService'
 import { usePosts } from './components/hooks/usePosts';
+import { useFatching } from './components/hooks/useFatching';
 
 
 
 function App() {
-    const [posts, setPosts] = useState(
-        [
-            {id: 2, title: 'JS triks', body: "2" },
-            {id: 1, title: 'HS triks', body: "1" },
-            {id: 3, title: 'C++ triks', body: "3" },
-        ]
-    ) 
+    const [posts, setPosts] = useState([])  
 
-    async function fatchPosts() {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
-        setPosts([...posts, ...response.data])
-    }
+    const [fachingPost, isPostLoading, errorPost] = useFatching(async () => {
+        const posts = await new PostService().getAll()
+        setPosts(posts)
+    })
 
     useEffect(() => {
-        fatchPosts()
+        fachingPost()
         },
         []
-    )
-
+    )  
+    
     const [filter, setFilter] = useState({sort: '', query: ''})
 
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
@@ -62,8 +57,10 @@ function App() {
         
         <PostFilter filter={filter} setFilter={setFilter} />
         
-        <PostList remove={removePost} posts={sortedAndSearchedPosts} title="JavaScript" />
-        
+        {isPostLoading 
+            ? <Loading/>
+            : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="JavaScript" />
+        }
     </div>
     );
 }

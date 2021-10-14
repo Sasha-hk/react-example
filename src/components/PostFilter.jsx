@@ -10,7 +10,7 @@ const PostFilter = ({filter, setFilter}) => {
             <Input onChange={e => setFilter({...filter, query: e.target.value})} value={filter.query} />
 
             <Select 
-                options={[{value: 'title', name: 'by name'}, {value: 'content', name: 'by body'}]} 
+                options={[{value: 'title', name: 'by name'}, {value: 'body', name: 'by body'}]} 
                 defaultValue="None" 
                 value={filter.sort}
                 onChange={e => setFilter({...filter, sort: e})}    

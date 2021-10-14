@@ -5,14 +5,14 @@ import Input from './UI/Input/Input.jsx'
 
 
 const PostForm = ({create}) => {
-    const [newPost, setNewPost] = useState({ title: '', content: ''})
+    const [newPost, setNewPost] = useState({ title: '', body: ''})
  
     function addNewPost(e) {
-        e.preventDefault() 
+        e.preventDefault()
         create({...newPost, id: Date.now()})
 
-        if (newPost.title && newPost.content) {
-            setNewPost({title: '', content: ''})
+        if (newPost.title && newPost.body) {
+            setNewPost({title: '', body: ''})
         }
     }
 
@@ -26,8 +26,8 @@ const PostForm = ({create}) => {
             />
 
             <Input 
-                value={newPost.content}
-                onChange={e => setNewPost({...newPost, content: e.target.value})}
+                value={newPost.body}
+                onChange={e => setNewPost({...newPost, body: e.target.value})}
                 type="text" 
                 placeholder="content" 
             />

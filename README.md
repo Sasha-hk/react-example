@@ -1,4 +1,4 @@
-# React-example
+# 🚀 React-example
 
 This is a simple tutorial from React with some helpful tips that I noticed
 
